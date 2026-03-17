@@ -2,7 +2,7 @@
 ## Retrieve Data, Subvert Application Logic
 
 - Below are some examples of payloads. Whether they will work or not depends and not **GURANTEED**. We need to have an idea of the query made to the application's database based on which we need to make modifications of the below payloads.
-#### **PAYLOADS examples** :
+### **PAYLOADS** :
 
 ```sql
 --
@@ -46,11 +46,11 @@ Warning: Take care when injecting the condition `OR 1=1` into a SQL query. Even 
 #### 2.  
 
 
-### **PAYLOADS examples** :
+### **PAYLOADS :**
 
-- `' UNION SELECT <columns to check> FROM <table name>`
-
-
+```sql
+UNION SELECT <columns to check> FROM <table name>
+```
 
 
 
