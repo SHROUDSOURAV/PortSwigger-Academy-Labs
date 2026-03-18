@@ -1,4 +1,10 @@
 
+## Detecting SQLi
+
+- The single quote character `'` and look for errors or other anomalies.
+- Boolean conditions such as `OR 1=1` and `OR 1=2`, and look for differences in the application's responses.
+
+
 ## Retrieve Data, Subvert Application Logic
 
 - Below are some examples of payloads. Whether they will work or not depends and not **GURANTEED**. We need to have an idea of the query made to the application's database based on which we need to make modifications of the below payloads.
@@ -60,11 +66,13 @@ DUAL is an oracle inbuilt table present in the database
 */
 ```
 
-#### 2.  Finding String Compatible Datatype
+#### 2.  Finding String Compatible Datatype/Column Datatype Order
 
 - Finding string compatible datatype lets us understand which column is displaying string type data and the order of column in which the string datatype is displayed. Now the idea is if there is a **username** , **password** column we can insert it into this position and the data will be possibly displayed onscreen.
 	
 - If we get an error then we need to move `'a'` to the subsequent positions of `NULL` and recheck until we get no error. If we get no error and the application's response contains some additional content including the injected string value, then the relevant column is suitable for retrieving string data. That being said sometimes no error but output still might not be displayed.
+	
+- This way we can not only find whether there is a string compatible datatype in the original query but also find the order of datatypes in the columns.
 
 ```sql
 ' UNION SELECT 'a',NULL,NULL,NULL--
@@ -79,7 +87,7 @@ etc...
 ### **PAYLOADS :**
 
 ```sql
-UNION SELECT <columns to check> FROM <table name>
+UNION SELECT <columns> FROM <table name>--
 /*
 the number of columns will vary based on what we find in the requirements phase
 the order, number of columns everything depends on the requirement phase
@@ -88,10 +96,7 @@ so do it carefully to get better results over here.
 ```
 
 
+## Examining the Database
 
-## Blind SQLi Exploitation Techniques
-
-- asdasdasd
-
-
+[SQLi CHEATSHEET PortSwigger](https://portswigger.net/web-security/sql-injection/cheat-sheet)
 
