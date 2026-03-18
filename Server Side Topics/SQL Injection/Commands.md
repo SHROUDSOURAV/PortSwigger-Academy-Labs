@@ -15,7 +15,8 @@
 -- '
 ' --
 OR 1=1 --'
-
+'+OR+1=1--  
+'
 /*
 Warning: Take care when injecting the condition `OR 1=1` into a SQL query. Even if it appears to be harmless in the context you're injecting into, it's common for applications to use data from a single request in multiple different queries. If your condition reaches an `UPDATE` or `DELETE` statement, for example, it can result in an accidental loss of data.
 */
