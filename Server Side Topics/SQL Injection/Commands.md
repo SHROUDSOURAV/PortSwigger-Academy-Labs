@@ -20,7 +20,7 @@ OR 1=1 --'
 /*
 Warning: Take care when injecting the condition `OR 1=1` into a SQL query. Even if it appears to be harmless in the context you're injecting into, it's common for applications to use data from a single request in multiple different queries. If your condition reaches an `UPDATE` or `DELETE` statement, for example, it can result in an accidental loss of data.
 
-+ sign helps to produce spaces in HTTP/HTTPS requests.
+use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
 
@@ -66,6 +66,8 @@ etc...
 /*
 on oracle every select query requires FROM keyword with a valid table name
 DUAL is an oracle inbuilt table present in the database
+
+use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
 
@@ -90,6 +92,8 @@ etc...'
 ' UNION SELECT 'a',NULL,NULL,NULL FROM DUAL 
 on oracle every select query requires FROM keyword with a valid table name
 DUAL is an oracle inbuilt table present in the database
+
+use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
 
@@ -102,6 +106,8 @@ UNION SELECT <columns> FROM <table name>--
 the number of columns will vary based on what we find in the requirements phase
 the order, number of columns everything depends on the requirement phase
 so do it carefully to get better results over here.
+
+use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
 
