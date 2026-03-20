@@ -35,7 +35,7 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 - The columns must have the same order. For example : `table1 -> col1=int col2=string then table2 col1=string col2=int will give error. order same, datatype same, position matters  so => table2 -> col2=string col1=int will be right`.
 
 
-#### 1. Determine number of columns required
+### 1. Determine number of columns required
 
 - **METHOD 1** :
 	- Use the `ORDER BY` clause and increase the number by `1` each time until we hit an error to understand the number of columns returned by the original query. The number where we hit the error subtract `-1` to get number of columns. For example : `error at 3 so total columns = 3 - 1 = 2`.
@@ -68,7 +68,7 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
 
-#### 2.  Finding String Compatible Datatype/Column Datatype Order
+### 2.  Finding String Compatible Datatype/Column Datatype Order
 
 - Finding string compatible datatype lets us understand which column is displaying string type data and the order of column in which the string datatype is displayed. Now the idea is if there is a **username** , **password** column we can insert it into this position and the data will be possibly displayed onscreen.
 	
@@ -92,8 +92,8 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
 
-
-### **PAYLOADS :**
+### Payload Injection
+#### **PAYLOADS :**
 
 ```sql
 UNION SELECT <columns> FROM <table name>-- -> for oracle
@@ -106,7 +106,6 @@ so do it carefully to get better results over here.
 use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
-
 
 ## Examining the Database
 
