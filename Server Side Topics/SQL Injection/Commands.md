@@ -70,7 +70,7 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 
 ### 2.  Finding String Compatible Datatype/Column Datatype Order
 
-- Finding string compatible datatype lets us understand which column is displaying string type data and the order of column in which the string datatype is displayed. Now the idea is if there is a **username** , **password** column we can insert it into this position and the data will be possibly displayed onscreen.
+- Finding string compatible datatype lets us understand which column/columns is displaying string type data and the order of column in which the string datatype is displayed. Now the idea is if there is a **username** , **password** column we can insert it into this position and the data will be possibly displayed onscreen.
 	
 - If we get an error then we need to move `'a'` to the subsequent positions of `NULL` and recheck until we get no error. If we get no error and the application's response contains some additional content including the injected string value, then the relevant column is suitable for retrieving string data. That being said sometimes no error but output still might not be displayed.
 	
@@ -87,6 +87,8 @@ etc...'
 ' UNION SELECT 'a',NULL,NULL,NULL FROM DUAL 
 on oracle every select query requires FROM keyword with a valid table name
 DUAL is an oracle inbuilt table present in the database
+
+Remeber that there can be more than 1 string type compatible columns so you can try using 'b', 'c', 'd'... to check further columns compatibility with string datatype.
 
 use + sign to produce spaces in HTTP/HTTPS requests.
 */
