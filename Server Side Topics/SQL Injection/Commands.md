@@ -90,7 +90,7 @@ etc...'
 on oracle every select query requires FROM keyword with a valid table name
 DUAL is an oracle inbuilt table present in the database
 
-Remember that there can be more than 1 string type compatible columns so you can try using 'b', 'c', 'd'... to check further columns compatibility with string datatype.
+Remember that there can be more than 1 string type compatible columns so you can try using 'b', 'c', 'd'... to check further columns compatibility with string datatype. example : - ' UNION SELECT 'a','b',NULL,NULL--
 
 use + sign to produce spaces in HTTP/HTTPS requests.
 */
