@@ -74,7 +74,9 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 	
 - If we get an error then we need to move `'a'` to the subsequent positions of `NULL` and recheck until we get no error. If we get no error and the application's response contains some additional content including the injected string value, then the relevant column is suitable for retrieving string data. That being said sometimes no error but output still might not be displayed.
 	
-- This way we can not only find whether there is a string compatible datatype in the original query but also find the order of datatypes in the columns.
+- This way we can not only find whether there is a string compatible datatype in the original query but also find the order of datatypes in the columns. 
+	
+- Remember that there can be **more than 1 string type compatible columns** so you can try using `'b'`, `'c'`, `'d'`... to check further columns compatibility with string datatype.
 
 ```sql
 ' UNION SELECT 'a',NULL,NULL,NULL--
