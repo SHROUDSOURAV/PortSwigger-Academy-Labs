@@ -129,6 +129,44 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 */
 ```
 
+---
+## Blind SQLi Techniques
+
+### Checking Parameter Vulnerability
+
+- Lets say the original query is `SELECT item_name FROM Shop WHERE item_name=something`
+- Have a basic idea or concept of what the query might be doing and then do the below stuff.
+- Check parameter vulnerabilities if any.
+- Look for server responses, any change, analyze code or something.
+
+```sql
+' AND '1'='1
+' AND '1'='2
+/*
+the above 2 payloads are demo
+like check each one and if responses differ you got a SQLi vulnerability
+*/
+```
+
+### Checking Table Presence
+
+- For example a query has a structure like `SELECT item_name FROM Shop WHERE item_name='something'` . Now in this query lets say we want to add our own query to check if a certain table is present or not.
+- Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
+
+```sql
+' AND (SELECT 'a' FROM <table_name> LIMIT 1)='a'--
+```
+
+### Checking User Presence
+
+- For example a query has a structure like `SELECT item_name FROM Shop WHERE item_name='something'` . Now in this query lets say we want to add our own query to check if a certain table is present or not.
+- Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
+
+```sql
+' AND (SELECT 'a' FROM <table_name> WHERE <column>='<username>' LIMIT 1)='a'--
+```
+
+---
 ## Examining the Database
 
 [SQLi CHEATSHEET PortSwigger](https://portswigger.net/web-security/sql-injection/cheat-sheet)
