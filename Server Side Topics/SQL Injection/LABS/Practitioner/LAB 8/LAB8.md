@@ -47,3 +47,5 @@ To solve the lab, perform a SQL injection UNION attack that retrieves all userna
 
 - Use the gained credentials to login as `administrator`.
 
+![Solved](./Images/img1.png)
+
