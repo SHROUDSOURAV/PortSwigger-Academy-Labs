@@ -172,18 +172,19 @@ like check each one and if responses differ you got a SQLi vulnerability
 
 ### 4. Bruteforcing Password
 
-- Below is a demo payload. When you are trying the payload might be different because it highly depends on the web app and its sql query structure. The below payload is designed keeping the `SELECT item_name FROM Shop WHERE item_name='something'` structure in mind.
-- It requires BurpSuite intruder payload insertion. In the `<burp payload>` load a list of characters which will be placed there and the `SUBSTRING` checks each character from the payload with the password column field index value.
-- Also you need to increment the index value each time to find the character for each index. You need to do this to until you complete the total length of the password.`SUBSTRING(column,<increment_till_password_length>,1)` . The number of times payload sent = the total length of the password.
+- This attack uses **Blind SQL Injection with BurpSuite Intruder** to extract sensitive data (e.g., password) one character at a time by checking conditions. The base payload structure is `SELECT item_name FROM Shop WHERE item_name='input'`
+- The payload is designed to extract a **single character from the password column** using the `SUBSTRING()` function. It compares that character with a guessed value provided via BurpSuite payloads.
+- Use BurpSuite Cluster Bomb Attack.
+	- **Payload 1 Configuration**
+		- `POS` should contain numbers from 1 to **length of the password**.
+		- Like load Payload type Numbers and fill the input field. Starting = 1, Ending = **length of password**, Step = 1.
+		
+	- **Payload 2 Configuration**
+		- `CHAR` should have characters which you want to check against. The wordlist.
+		- One character each line.
 
 ```sql
-' AND (SELECT SUBSTRING(<password_column>,1,1) FROM <table_name> WHERE <username_column>='<username>')='<burp_payload>'--
-
-/*
-here for example substring(password,1,1) => gives letter s
-so next time do substring(password,2,1) 
-and next time substring(password,3,1) ... till the total length of the password.
-*/
+' AND (SELECT SUBSTRING(<password_column>,§POS§,1) FROM users WHERE <username_column>='<username>')='§CHAR§'--
 ```
 
 ---
