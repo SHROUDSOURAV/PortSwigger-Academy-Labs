@@ -174,7 +174,7 @@ like check each one and if responses differ you got a SQLi vulnerability
 
 - Below is a demo payload. When you are trying the payload might be different because it highly depends on the web app and its sql query structure. The below payload is designed keeping the `SELECT item_name FROM Shop WHERE item_name='something'` structure in mind.
 - It requires BurpSuite intruder payload insertion.
-- Also you need to increment the index value each time to find the character for each index. You need to do this to until you complete the total length of the password.`SUBSTRING(column,<increment_till_password_length>,1)` 
+- Also you need to increment the index value each time to find the character for each index. You need to do this to until you complete the total length of the password.`SUBSTRING(column,<increment_till_password_length>,1)` . The number of times payload sent = the total length of the password.
 
 ```sql
 ' AND (SELECT SUBSTRING(<password_column>,1,1) FROM <table_name> WHERE <username_column>='<username>')='<burp_payload>'--
