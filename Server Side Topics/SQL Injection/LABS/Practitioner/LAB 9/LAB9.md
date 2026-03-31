@@ -112,5 +112,7 @@ else
 ![Grep Match](./Images/img5.png)
 
 - After setting up the above configurations. Start the Intruder Attack. This might take a couple of hours.
+- We got the `administrator` password `uw67qro7n7yc0q1r3xtm`.
 
+![Solved](./Images/img6.png)
 
