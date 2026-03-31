@@ -25,7 +25,7 @@ To solve the lab, log in as the `administrator` user.
 - Below is the assumption of how the query is working.
 
 ```sql
-select trackingId from cookie_table where trackingId = 'NCiLGUgxSvdaOjLl'
+select trackingId from cookie_table where trackingId = 'cookie_value'
 
 /*
 if (trackingId matches)
@@ -71,10 +71,12 @@ else
 
 ### Deducing `administrator` Password
 
+#### Finding Password Length
+
 - Replace the above payload with the below one.
 
 ```sql
-'+AND+(SELECT+'a'+FROM+users+WHERE+username='administrator'+AND+LENGTH(password > 1))='a'---
+'+AND+(SELECT+'a'+FROM+users+WHERE+username='administrator'+AND+LENGTH(password) > 1)='a'---
 ```
 
 - Take the request and send to Intruder.
@@ -88,4 +90,27 @@ else
 
 - Start the intruder attack. This might take a while.
 - From analysis you will find out that password length above **20** characters is not giving the **Welcome back!** msg indicating password length is **20**.
+
+### Finding Password
+
+- Keep the previous request in the Intruder and replace the current payload with the below payload.
+
+```sql
+'+AND+(SELECT+SUBSTRING(password,§§,1)+FROM+users+WHERE+username='administrator')='§§'--
+```
+
+- Setup the below **Payload1 Configuration**.
+
+![Payload1 Configuration](./Images/img3.png)
+
+- Below is the **Payload2 Configuration**.
+
+![Payload2 Configuration](./Images/img4.png)
+
+- Setup the below **Grep Match**. Go to Settings -> Scroll down.
+
+![Grep Match](./Images/img5.png)
+
+- After setting up the above configurations. Start the Intruder Attack. This might take a couple of hours.
+
 
