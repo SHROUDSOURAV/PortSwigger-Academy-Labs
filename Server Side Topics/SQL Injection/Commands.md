@@ -132,6 +132,10 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 ---
 ## Blind SQLi Techniques
 
+## Conditional Responses
+
+- The below techniques are based on Blind SQLi conditional responses i.e. we need to infer our SQLi payload and customize it based on what the response we get. Like creating **true** or **false** statements and then whatever response we get based on that.
+
 ### Checking Parameter Vulnerability
 
 - Lets say the original query is `SELECT item_name FROM Shop WHERE item_name=something`
@@ -164,6 +168,15 @@ like check each one and if responses differ you got a SQLi vulnerability
 
 ```sql
 ' AND (SELECT 'a' FROM <table_name> WHERE <column>='<username>' LIMIT 1)='a'--
+```
+
+### Bruteforcing Password
+
+- Below is a demo payload. When you are trying the payload might be different because it highly depends on the web app and its sql query structure. The below payload is designed keeping the `SELECT item_name FROM Shop WHERE item_name='something'` structure in mind.
+- It requires BurpSuite intruder payload insertion.
+
+```sql
+' AND (SELECT SUBSTRING(<password_column>,1,1) FROM <table_name> WHERE <username_column>='<username>')='<burp_payload>'--
 ```
 
 ---
