@@ -173,7 +173,7 @@ like check each one and if responses differ you got a SQLi vulnerability
 ### 4. Bruteforcing Password
 
 - Below is a demo payload. When you are trying the payload might be different because it highly depends on the web app and its sql query structure. The below payload is designed keeping the `SELECT item_name FROM Shop WHERE item_name='something'` structure in mind.
-- It requires BurpSuite intruder payload insertion.
+- It requires BurpSuite intruder payload insertion. In the `<burp payload>` load a list of characters which will be placed there and the `SUBSTRING` checks each character from the payload with the password column field index value.
 - Also you need to increment the index value each time to find the character for each index. You need to do this to until you complete the total length of the password.`SUBSTRING(column,<increment_till_password_length>,1)` . The number of times payload sent = the total length of the password.
 
 ```sql
