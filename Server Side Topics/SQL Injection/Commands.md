@@ -132,7 +132,7 @@ use + sign to produce spaces in HTTP/HTTPS requests.
 ---
 ## Blind SQLi Techniques
 
-## Conditional Responses
+## Conditional Based SQLi
 
 - The below techniques are based on Blind SQLi conditional responses i.e. we need to infer our SQLi payload and customize it based on what the response we get. Like creating **true** or **false** statements. **true** and **false** responses will vary. Like for example :- The server might say **welcome** if the query output is **true** and might not output anything if query output is **false**.
 
@@ -154,8 +154,9 @@ like check each one and if responses differ you got a SQLi vulnerability
 
 ### 2. Checking Table Presence
 
-- For example a query has a structure like `SELECT item_name FROM Shop WHERE item_name='something'` . Now in this query lets say we want to add our own query to check if a certain table is present or not.
-- Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
+- **WORKING**
+	- For example a query has a structure like `SELECT item_name FROM Shop WHERE item_name='something'` . Now in this query lets say we want to add our own query to check if a certain table is present or not.
+	- Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
 
 ```sql
 ' AND (SELECT 'a' FROM <table_name> LIMIT 1)='a'--
@@ -163,8 +164,9 @@ like check each one and if responses differ you got a SQLi vulnerability
 
 ### 3. Checking User Entry
 
-- For example a query has a structure like `SELECT item_name FROM Shop WHERE item_name='something'` . Now in this query lets say we want to add our own query to check if a certain table is present or not.
-- Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
+- **WORKING**
+	- For example a query has a structure like `SELECT item_name FROM Shop WHERE item_name='something'` . Now in this query lets say we want to add our own query to check if a certain table is present or not.
+	- Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
 
 ```sql
 ' AND (SELECT 'a' FROM <table_name> WHERE <column>='<username>' LIMIT 1)='a'--
@@ -172,33 +174,49 @@ like check each one and if responses differ you got a SQLi vulnerability
 
 ### 4. Finding Password Length
 
-- Increment the `1` value by one each time until you hit an error. So if at `19` you get error so the password length is 19.
+- **WORKING**
+	- Increment the  `<value>` by `1` each time until you hit an error. So if at `19` you get error so the password length is 19.
+
+**TIP: Send this request to BurpSuite Intruder and then add payload in the `<value>` part and set Payload Type to Numbers and provide a starting and ending range. Then start the attack. Look for the last error request. The last error request will have the length of the password. So if the last request is `19` so password length = `19 + 1 = 20`.**
 
 ```sql
-'+AND+(SELECT+'a'+FROM+<table_name>+WHERE+<username_column>='<username>'+AND+LENGTH(<password_column>) > 1)='a'--
+'+AND+(SELECT+'a'+FROM+<table_name>+WHERE+<username_column>='<username>'+AND+LENGTH(<password_column>) > <value>)='a'--
 ```
 
 ### 5. Bruteforcing Password
 
-- This attack uses **Blind SQL Injection with BurpSuite Intruder** to extract sensitive data (e.g., password) one character at a time by checking conditions. The base payload structure is `SELECT item_name FROM Shop WHERE item_name='input'`
-- The payload is designed to extract a **single character from the password column** using the `SUBSTRING()` function. It compares that character with a guessed value provided via BurpSuite payloads.
-- Use BurpSuite Cluster Bomb Attack.
+- **LOGIC**
+	- This attack uses **Blind SQL Injection with BurpSuite Intruder** to extract sensitive data (e.g., password) one character at a time by checking conditions. The base payload structure is `SELECT item_name FROM Shop WHERE item_name='input'`
+	- The payload is designed to extract a **single character from the password column** using the `SUBSTR()` function. It compares that character with a guessed value provided via BurpSuite payloads.
+- **SETUP**
+	- Use BurpSuite **CLUSTER BOMB ATTACK**.
 	- **Payload 1 Configuration**
-		- `POS` should contain numbers from 1 to **length of the password**.
-		- Like load Payload type Numbers and fill the input field. Starting = 1, Ending = **length of password**, Step = 1.
+		- `§1§` is the **INDEX VALUE**.
+		- `§1§` should contain numbers from 1 to **length of the password**.
+		- `Payload Type -> Numbers`, `Start -> 1`, `End -> length of password`, `Step -> 1 `
+		- Testing each character from the **payload 2** wordlist against each index of the password value.
 		
 	- **Payload 2 Configuration**
-		- `CHAR` should have characters which you want to check against. The wordlist.
-		- One character each line.
+		- `§2§` is the **WORDLIST CHARACTER**.
+		- `§2§` will contain one character each line. 
+		- `Payload Type -> Bruteforcer` , `Character Set -> abcdefghijklmnopqrstuvwxyz0123456789`, `Min Length -> 1 Max Length -> 1`
+		
+	-  **Grep Match Configuration**
+		- Go to settings -> Scroll Down.
+		- Add `"<string>"`.  The string you are adding should be the string that gets returned in a **true** response by the app so that you can filter the correct password letters fast.
+		
+- **WORKING**
+	- Since this is conditional response based SQLi so for each **true** condition there will a unique response. Look for that unique response in the BurpSuite requests.
 
 ```sql
-' AND (SELECT SUBSTRING(<password_column>,§POS§,1) FROM users WHERE <username_column>='<username>')='§CHAR§'--
+' AND (SELECT SUBSTR(<password_column>,§1§,1) FROM users WHERE <username_column>='<username>')='§2§'--
 ```
 
-## Conditional Errors
+## Error based SQLi
 
-- The results of the SQL query are not returned, and the application does not respond any differently based on whether the query returns any rows. If the SQL query causes an error, then the application returns a custom error message 
+- No database rows are returned. If SQL query has error then error message is returned else nothing.
 - We can use our custom payload to generate specific errors and use those errors to gain further info about the database and ask **true** and **false** questions instead of directly asking it.
+- We need to use the errors as **true** and **false** statements accordingly.
 
 ### 1. Checking Parameter Vulnerability
 
@@ -236,6 +254,44 @@ NOTE: this is for oracle databases so check the Cheatsheet of SQli to give datab
 /*
 NOTE: For database specific string concatenation and syntaxes checkout the Cheatsheet of the SQli.
 */
+```
+
+### 4. Finding Password Length
+
+- Increment the  `<value>` by `1` each time until you hit an error. So if at `19` you get error so the password length is 19.
+- If `LENGTH(<password_column>) > <value>` is **true** then password length = current `<value>`. Check the last request.
+- If `LENGTH(<password_column>) > <value>` is **false** then increment `<value>` by 1.
+
+**TIP: Send this request to BurpSuite Intruder and then add payload in the `<value>` part and set Payload Type to Numbers and provide a starting and ending range. Then start the attack. Look for the last error request. The last error request will have the length of the password. So if the last request is `19` so password length = `19 + 1 = 20`.**
+
+```sql
+' AND (SELECT CASE WHEN LENGTH(<password_column>) > <value> THEN to_char(1/0) ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>')='a'--
+```
+
+### 5. Bruteforcing Password
+
+- **LOGIC**
+	- This attack uses **Blind SQL Injection with BurpSuite Intruder** to extract sensitive data (e.g., password) one character at a time by checking conditions. The base payload structure is `SELECT item_name FROM Shop WHERE item_name='input'`
+	- The payload is designed to extract a **single character from the password column** using the `SUBSTR()` function. It compares that character with a guessed value provided via BurpSuite payloads.
+	
+- **SETUP**
+	- Use BurpSuite **CLUSTER BOMB ATTACK**.
+	- **Payload 1 Configuration**
+		- `§1§` is the **INDEX VALUE**.
+		- `§1§` should contain numbers from 1 to **length of the password**.
+		- `Payload Type -> Numbers`, `Start -> 1`, `End -> length of password`, `Step -> 1 `
+		- Testing each character from the **payload 2** wordlist against each index of the password value.
+		
+	- **Payload 2 Configuration**
+		- `§2§` is the **WORDLIST CHARACTER**.
+		- `§2§` will contain one character each line. 
+		- `Payload Type -> Bruteforcer` , `Character Set -> abcdefghijklmnopqrstuvwxyz0123456789`, `Min Length -> 1 Max Length -> 1`
+		
+- **WORKING**
+	- If error is produced then **true** else **false**. It means if error then character matches index character value. Use the BurpSuite to look for these error requests.
+
+```sql
+' AND (SELECT CASE WHEN SUBSTR(<password_column>,§1§,1)='§2§' THEN to_char(1/0) ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>')='a'--
 ```
 
 ---
