@@ -80,3 +80,5 @@ To solve the lab, log in as the `administrator` user
 
 - After bruteforcing I got the `administrator` password which is `aozfncuoqwo8ir1pqj8l`.
 
+![Solved](./Images/img1.png)
+
