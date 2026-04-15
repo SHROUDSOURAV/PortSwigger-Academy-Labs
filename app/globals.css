@@ -117,3 +117,22 @@ h2 {
   background: hsl(var(--primary) / 0.3);
 }
 
+/* Doc UI Refinement - Hiding Search and Pagination per User Request */
+/* Target Search Bar */
+.nextra-search,
+div[class*="search"],
+.nextra-nav-container .nextra-search,
+header .nextra-search {
+  display: none !important;
+}
+
+/* Target Bottom Pagination/Navigation Cards */
+.nextra-pagination,
+.nextra-navigation-links,
+[class*="pagination"],
+footer nav,
+.nextra-footer + nav,
+div[class*="navigation"] {
+  display: none !important;
+}
+

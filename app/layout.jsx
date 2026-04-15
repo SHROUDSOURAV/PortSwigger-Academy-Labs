@@ -19,6 +19,7 @@ const navbar = (
       </div>
     } 
     projectLink="https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs"
+    search={<></>}
   />
 );
 const footer = <Footer>PortSwigger Labs</Footer>;
@@ -43,6 +44,7 @@ export default async function RootLayout({ children }) {
             autoCollapse: false,
             defaultMenuCollapseLevel: 1
           }}
+          navigation={false}
           darkMode={false}
           nextThemes={{ 
             defaultTheme: "dark",
