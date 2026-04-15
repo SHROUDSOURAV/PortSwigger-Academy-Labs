@@ -5,12 +5,22 @@ import "./globals.css";
 export const metadata = {
   title: {
     default: "PortSwigger Labs",
-    template: "%s - PortSwigger Labs"
+    template: "%s | PortSwigger Labs"
   },
-  description: "PortSwigger Academy writeups with a dark-blue Nextra UI."
+  description: "Professional PortSwigger Academy writeups with a Midnight Cyber UI."
 };
 
-const navbar = <Navbar logo={<strong>PortSwigger Labs</strong>} />;
+const navbar = (
+  <Navbar 
+    logo={
+      <div className="flex items-center gap-2">
+        <div className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_hsl(var(--primary))]"></div>
+        <span className="font-mono font-bold tracking-tighter uppercase flicker">PortSwigger_Academy</span>
+      </div>
+    } 
+    projectLink="https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs"
+  />
+);
 const footer = <Footer>PortSwigger Labs</Footer>;
 
 export default async function RootLayout({ children }) {
@@ -33,8 +43,11 @@ export default async function RootLayout({ children }) {
             autoCollapse: false,
             defaultMenuCollapseLevel: 1
           }}
-          darkMode
-          nextThemes={{ defaultTheme: "dark" }}
+          darkMode={false}
+          nextThemes={{ 
+            defaultTheme: "dark",
+            forcedTheme: "dark"
+          }}
         >
           {children}
         </Layout>

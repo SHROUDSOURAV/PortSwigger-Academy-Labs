@@ -36,8 +36,9 @@ export default {
       />
     </>
   ),
-  darkMode: true,
+  darkMode: false,
   nextThemes: {
-    defaultTheme: "dark"
+    defaultTheme: "dark",
+    forcedTheme: "dark"
   }
 };
