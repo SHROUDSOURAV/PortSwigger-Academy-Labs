@@ -1,0 +1,41 @@
+@import "nextra-theme-docs/style.css";
+
+:root {
+  --x-color-nextra-bg: #081022;
+  --x-color-nextra-bg-2: #0b1836;
+  --x-color-nextra-bg-3: #112349;
+  --x-color-nextra-text: #dbeafe;
+  --x-color-nextra-border: #1e3a63;
+  --x-color-nextra-primary-hue: 218;
+  --x-color-nextra-primary-saturation: 88%;
+  --x-color-nextra-primary-lightness: 65%;
+}
+
+html.dark body {
+  background: radial-gradient(circle at 20% 0, #132b5d 0%, #081022 45%, #040814 100%);
+}
+
+html.dark .nextra-nav-container,
+html.dark .nextra-sidebar-container,
+html.dark .nextra-toc {
+  background-color: rgba(8, 16, 34, 0.86);
+  backdrop-filter: blur(8px);
+}
+
+html.dark .nextra-card,
+html.dark .nextra-code-block,
+html.dark .nextra-callout {
+  border-color: #1e3a63;
+  background: linear-gradient(145deg, rgba(16, 35, 73, 0.5), rgba(8, 16, 34, 0.75));
+}
+
+html.dark .nextra-code-block pre {
+  border: 1px solid #1f3f73;
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(56, 112, 195, 0.15), 0 10px 24px rgba(3, 9, 24, 0.45);
+}
+
+html.dark .nextra-sidebar-container a:hover,
+html.dark .nextra-toc a:hover {
+  color: #93c5fd;
+}

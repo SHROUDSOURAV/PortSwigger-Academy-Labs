@@ -1,0 +1,31 @@
+{
+  "name": "portswigger-academy-labs",
+  "version": "1.0.0",
+  "description": "This repository will contain all my PortSwigger Academy Labs writeups.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "sync:content": "node scripts/sync-md-to-pages.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs/issues"
+  },
+  "homepage": "https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs#readme",
+  "dependencies": {
+    "next": "^16.2.3",
+    "nextra": "^4.6.1",
+    "nextra-theme-docs": "^4.6.1",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5"
+  }
+}
