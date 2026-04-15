@@ -5,17 +5,17 @@
 @tailwind utilities;
 
 :root {
-  /* Cyber Blue Core Palette */
-  --primary: 195 100% 50%;
-  --x-color-nextra-primary-hue: 195;
-  --x-color-nextra-primary-saturation: 100%;
-  --x-color-nextra-primary-lightness: 50%;
+  /* Cobalt Slate Blue - Professional & Non-Straining */
+  --primary: 210 45% 65%;
+  --x-color-nextra-primary-hue: 210;
+  --x-color-nextra-primary-saturation: 45%;
+  --x-color-nextra-primary-lightness: 65%;
   
-  --x-color-nextra-bg: 210 20% 4%;
-  --x-color-nextra-bg-2: 210 20% 6%;
-  --x-color-nextra-bg-3: 210 20% 10%;
-  --x-color-nextra-text: 195 20% 90%;
-  --x-color-nextra-border: 195 100% 15%;
+  --x-color-nextra-bg: 215 20% 5%;
+  --x-color-nextra-bg-2: 215 20% 8%;
+  --x-color-nextra-bg-3: 215 20% 12%;
+  --x-color-nextra-text: 210 15% 85%;
+  --x-color-nextra-border: 210 30% 20%;
 }
 
 html.dark body {

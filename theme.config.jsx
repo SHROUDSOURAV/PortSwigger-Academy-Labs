@@ -12,8 +12,8 @@ export default {
   project: {
     link: "https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs"
   },
-  docsRepositoryBase:
-    "https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs/tree/main",
+  feedback: { content: null },
+  editLink: { text: null },
   footer: {
     text: (
       <div className="flex flex-col gap-1 font-mono text-[10px] opacity-50 uppercase">
