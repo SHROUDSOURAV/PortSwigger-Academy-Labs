@@ -18,7 +18,8 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body className="antialiased">
+        <div className="scanline-bar" />
         <Layout
           navbar={navbar}
           pageMap={pageMap}
@@ -29,8 +30,8 @@ export default async function RootLayout({ children }) {
           toc={{ title: null, extraContent: null, backToTop: null, float: false }}
           copyPageButton
           sidebar={{
-            defaultOpen: false,
-            autoCollapse: true,
+            defaultOpen: true,
+            autoCollapse: false,
             defaultMenuCollapseLevel: 1
           }}
           darkMode

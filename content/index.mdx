@@ -1,3 +1,36 @@
-# PortSwigger Labs
+# System / Root_Terminal
 
-PortSwigger Academy lab notes with a dark-blue UI, organized by `Server Side Topics` and `Client Side Topics`.
+<div className="flex flex-col gap-4 p-8 my-8 border-2 border-primary/20 bg-primary/5 rounded-lg shadow-[0_0_50px_hsl(var(--primary)/0.1)] relative overflow-hidden group">
+  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50 group-hover:opacity-100 transition-opacity"></div>
+  
+  <div className="flex items-center justify-between">
+    <div className="flex flex-col">
+      <span className="text-primary font-mono text-[10px] tracking-[0.2em] uppercase opacity-70">Uplink Status</span>
+      <span className="text-xl font-mono font-bold flicker">SECURE_ACTIVE_SESSION</span>
+    </div>
+    <div className="p-3 border border-primary/30 rounded bg-primary/10 shadow-[0_0_15px_hsl(var(--primary)/0.2)]">
+      <span className="text-primary font-mono text-xl">0xAB</span>
+    </div>
+  </div>
+
+  <div className="h-[1px] w-full bg-primary/10 my-2"></div>
+
+  <p className="text-foreground/80 font-mono text-sm leading-relaxed max-w-2xl m-0">
+    Welcome to the central command node for PortSwigger Academy Lab writeups. Select a target module from the directory listing on the left to initialize learning protocols.
+  </p>
+
+  <div className="flex gap-6 mt-4">
+    <div className="flex flex-col">
+      <span className="text-[10px] uppercase tracking-widest text-primary/50">Nodes Detected</span>
+      <span className="text-lg font-mono">124_MODULES</span>
+    </div>
+    <div className="flex flex-col">
+      <span className="text-[10px] uppercase tracking-widest text-primary/50">Encryption</span>
+      <span className="text-lg font-mono">AES_256_GCM</span>
+    </div>
+  </div>
+</div>
+
+## Documentation Protocols
+
+Use the sidebar navigation to access detailed writeups for both **Server-Side** and **Client-Side** vulnerabilities. Each node contains reproduction steps, exploitation mechanics, and remediation advice.
