@@ -18,8 +18,7 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
-        <div className="scanline-bar" />
+      <body className="antialiased selection:bg-primary/20 selection:text-primary">
         <Layout
           navbar={navbar}
           pageMap={pageMap}
