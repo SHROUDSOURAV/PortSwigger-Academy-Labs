@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { watch } from "node:fs";
 import path from "node:path";
 
 const projectRoot = process.cwd();
@@ -176,7 +177,23 @@ const run = async () => {
   console.log(`Synced ${markdownFiles.length} markdown files to content/.`);
 };
 
-run().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+const isWatchMode = process.argv.includes("--watch");
+
+run()
+  .then(() => {
+    if (isWatchMode) {
+      console.log("Watching for changes in markdown files...");
+      watch(projectRoot, { recursive: true }, (eventType, filename) => {
+        if (filename && (filename.endsWith(".md") || filename.endsWith(".mdx"))) {
+          if (!filename.startsWith("content") && !filename.startsWith(".next") && !filename.startsWith("node_modules")) {
+            console.log(`File change detected: ${filename}. Re-syncing...`);
+            run().catch(console.error);
+          }
+        }
+      });
+    }
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
