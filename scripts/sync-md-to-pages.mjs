@@ -182,11 +182,16 @@ const isWatchMode = process.argv.includes("--watch");
 run()
   .then(() => {
     if (isWatchMode) {
-      console.log("Watching for changes in markdown files...");
+      console.log("Watching for changes in source files...");
       watch(projectRoot, { recursive: true }, (eventType, filename) => {
-        if (filename && (filename.endsWith(".md") || filename.endsWith(".mdx"))) {
-          if (!filename.startsWith("content") && !filename.startsWith(".next") && !filename.startsWith("node_modules")) {
-            console.log(`File change detected: ${filename}. Re-syncing...`);
+        if (filename) {
+          const normalized = filename.replace(/\\/g, "/");
+          const isExcluded = ["content", ".next", "node_modules", ".git"].some(dir => 
+            normalized === dir || normalized.startsWith(dir + "/")
+          );
+
+          if (!isExcluded) {
+            console.log(`Change detected: ${filename}. Re-syncing...`);
             run().catch(console.error);
           }
         }
