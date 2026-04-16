@@ -48,7 +48,7 @@ const walkMarkdownFiles = async (dir) => {
       continue;
     }
 
-    if (!entry.isFile() || !entry.name.toLowerCase().endsWith(".md")) {
+    if (!entry.isFile() || !(entry.name.toLowerCase().endsWith(".md") || entry.name.toLowerCase().endsWith(".mdx"))) {
       continue;
     }
 

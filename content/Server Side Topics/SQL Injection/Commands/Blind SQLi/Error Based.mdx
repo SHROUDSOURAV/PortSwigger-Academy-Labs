@@ -1,4 +1,3 @@
-## Blind SQLi Techniques
 
 ## Error based SQLi
 

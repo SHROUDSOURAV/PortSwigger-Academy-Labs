@@ -4,8 +4,8 @@
   "description": "This repository will contain all my PortSwigger Academy Labs writeups.",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run sync:content && next dev",
+    "build": "npm run sync:content && next build",
     "start": "next start",
     "sync:content": "node scripts/sync-md-to-pages.mjs"
   },
