@@ -1,0 +1,6 @@
+
+## Visible Error Based SQLi
+
+
+
+
