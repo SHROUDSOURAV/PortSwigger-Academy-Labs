@@ -12,6 +12,7 @@
 ''
 /*
 verify which one of the above payloads cause error and which payload makes it disappear. If there is error produced in one and the other produces none then we have a vulnerable parameter. Since its a conditional error based sqli so direct true false queries will not work since the wep app will not return any rows. 
+you need to have a basic idea of what the original query is.
 */
 ```
 
