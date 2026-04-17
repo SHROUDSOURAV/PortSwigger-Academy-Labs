@@ -15,7 +15,7 @@ The database contains a different table called users, with columns called userna
 
 - Inserting the `'` quote beside the `TrackingID` gives us the below response, indicating the `TrackingID` is vulnerable to SQLi.
 
-![Image1](./Images/Img1.png)
+![Image1](./Images/img1.png)
 
 - Now injecting with the `'--` payload removes the error.
 
