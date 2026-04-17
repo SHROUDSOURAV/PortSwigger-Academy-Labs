@@ -16,6 +16,7 @@
 /*
 the above 2 payloads are demo
 like check each one and if responses differ you got a SQLi vulnerability
+you need to have a basic idea of what the original query is.
 */
 ```
 
