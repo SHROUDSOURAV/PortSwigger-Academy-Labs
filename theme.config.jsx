@@ -9,9 +9,6 @@ export default {
       <span className="font-mono font-bold tracking-tighter uppercase flicker">PortSwigger_Academy</span>
     </div>
   ),
-  project: {
-    link: "https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs"
-  },
   feedback: { content: null },
   editLink: { text: null },
   footer: {

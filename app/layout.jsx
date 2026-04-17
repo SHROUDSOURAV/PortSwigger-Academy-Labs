@@ -18,7 +18,6 @@ const navbar = (
         <span className="font-mono font-bold tracking-tighter uppercase flicker">PortSwigger_Academy</span>
       </div>
     } 
-    projectLink="https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs"
     search={<></>}
   />
 );
@@ -33,7 +32,6 @@ export default async function RootLayout({ children }) {
         <Layout
           navbar={navbar}
           pageMap={pageMap}
-          docsRepositoryBase="https://github.com/SHROUDSOURAV/PortSwigger-Academy-Labs/tree/main"
           footer={footer}
           editLink={null}
           feedback={{ content: null }}
