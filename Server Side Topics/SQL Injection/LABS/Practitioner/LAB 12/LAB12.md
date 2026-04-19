@@ -9,3 +9,16 @@ The results of the SQL query are not returned, and the application does not resp
 To solve the lab, exploit the SQL injection vulnerability to cause a 10 second delay.
 
 
+## Steps to Reproduce
+
+### Testing Entries
+
+- The `TrackingID` parameter is vulnerable in SQLi.
+- The below payload is used to perform Time Delay based SQLi.
+
+```sql
+'||pg_sleep(10)--
+```
+
+![Solved](./Images/img1.png)
+
