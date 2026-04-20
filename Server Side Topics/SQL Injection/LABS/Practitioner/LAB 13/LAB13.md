@@ -13,3 +13,18 @@ To solve the lab, log in as the `administrator` user.
 
 ## Step to Reproduce
 
+### Testing Entries
+
+- The `TrackingID` parameter in the `/` path of the web application is vulnerable to SQLi.
+- The below payloads are used to verify it. In the below payload `%3B` is URL encoding for `;` 
+
+```sql
+'%3BSELECT+CASE+WHEN+(1=1)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END--
+```
+
+- The above payload results in the application to return the response after 10 seconds while the below payload results in the application to respond without delay proving the application is vulnerable to Time Delay based SQLi.
+
+```sql
+'%3BSELECT+CASE+WHEN+(1=2)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END--
+```
+

