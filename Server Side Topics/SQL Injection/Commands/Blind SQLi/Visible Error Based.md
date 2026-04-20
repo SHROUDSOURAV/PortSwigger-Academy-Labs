@@ -78,3 +78,7 @@ if length of the request matters we cannot use the below payload.
 ' AND 1=CAST((SELECT <password column> FROM <table_name> WHERE <username column>='<username>') AS int)--
 ```
 
+---
+## Examining the Database
+
+[SQLi CHEATSHEET PortSwigger](https://portswigger.net/web-security/sql-injection/cheat-sheet)

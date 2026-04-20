@@ -62,3 +62,9 @@ You can also write (;) and then select the entire payload and click URL encoding
 -- Oracle
 '%3BSELECT+CASE+WHEN+(<username column>='<username>')+THEN+DBMS_PIPE.RECEIVE_MESSAGE('ADS',10)+ELSE+NULL+END+FROM+<table_name>--
 ```
+
+---
+## Examining the Database
+
+[SQLi CHEATSHEET PortSwigger](https://portswigger.net/web-security/sql-injection/cheat-sheet)
+
