@@ -62,11 +62,11 @@ check the PortSwigger CHEATSHEET for database specific payloads.
 
 ### 4. Finding Password Length
 
-- Increment the  `<value>` by `1` each time until you hit an error. So if at `19` you get error so the password length is 19.
-- If `LENGTH(<password_column>) > <value>` is **true** then password length = current `<value>`. Check the last request.
-- If `LENGTH(<password_column>) > <value>` is **false** then increment `<value>` by 1.
+- If `LENGTH(<password_column>) > <value>` is **true** → you get an **error**
+- If `LENGTH(<password_column>) > <value>` is **false** → it returns `'a'` (no error)
+- The first no error request in the length of the password.
 
-**TIP: Send this request to BurpSuite Intruder and then add payload in the `<value>` part and set Payload Type to Numbers and provide a starting and ending range. Then start the attack. Look for the last error request. The last error request will have the length of the password. So if the last request is `19` so password length = `19 + 1 = 20`.**
+**TIP: Send this request to BurpSuite Intruder and then add payload in the `<value>` part and set Payload Type to Numbers and provide a starting and ending range. Then start the attack.**
 
 ```sql
 -- PostgreSQL, Microsoft SQL Server (MSSQL)
