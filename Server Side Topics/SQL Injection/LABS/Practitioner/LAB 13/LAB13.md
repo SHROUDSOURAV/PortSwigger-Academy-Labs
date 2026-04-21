@@ -46,7 +46,13 @@ To solve the lab, log in as the `administrator` user.
 
 - The above payload results in no delay so the password length is `20`.
 
+### Bruteforcing Password
 
+
+
+```sql
+
+```
 
 
 
