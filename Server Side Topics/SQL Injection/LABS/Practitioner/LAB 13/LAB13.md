@@ -62,10 +62,10 @@ To solve the lab, log in as the `administrator` user.
 	- If there is no delay then wrong character else correct character.
 
 ```sql
-'%3BSELECT+CASE+WHEN+(username='administrator'+AND+SUBSTRING(password,1,1)='§1§')
+'%3BSELECT+CASE+WHEN+(username='administrator'+AND+SUBSTRING(password,<index>,1)='§1§')
 ```
 
-- So now basically increment each index position till `20` and find the password by noticing the delay in the response received present in the BurpSuite Intruder results column. From the above attack we got the password `jiw730owrdr4uio1wwcm`.
+- So now basically increment each `<index>` position till `20` and find the password by noticing the delay in the response received present in the BurpSuite Intruder results column. From the above attack we got the password `jiw730owrdr4uio1wwcm`.
 
 ![Solved](./Images/Img1.png)
 
