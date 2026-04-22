@@ -48,11 +48,29 @@ To solve the lab, log in as the `administrator` user.
 
 ### Bruteforcing Password
 
-
+- **SETUP**
+	- **Payload 2 Configuration**
+	    - `§1§` is the **WORDLIST CHARACTER**.
+	    - `§1§` will contain one character each line.
+	    - `Payload Type -> Bruteforcer` , `Character Set -> abcdefghijklmnopqrstuvwxyz0123456789`, `Min Length -> 1 Max Length -> 1`
+	- **Monitoring Delay**
+		- To do this, click the **Resource pool** tab in the side panel of the BurpSuite Intruder.
+		- Go `Create Custom new Resource Pool` and Name it according to you.
+		- Set `Maximum concurrent requests = 1`.
+- After setup **Start the Attack** and check the Response received. The delay will be shown in the greater difference in the response received. Since the payload uses `10 seconds` so Response received should be `approx 10,000`.
+- **WORKING**
+	- If there is no delay then wrong character else correct character.
 
 ```sql
-
+'%3BSELECT+CASE+WHEN+(username='administrator'+AND+SUBSTRING(password,1,1)='§1§')
 ```
+
+- So now basically increment each index position till `20` and find the password by noticing the delay in the response received present in the BurpSuite Intruder results column. From the above attack we got the password `jiw730owrdr4uio1wwcm`.
+
+![Solved](./Images/Img1.png)
+
+
+
 
 
 
